@@ -1,0 +1,13 @@
+What is the capital of France?
+A. London
+B. Paris
+C. Berlin
+D. Madrid
+ANSWER: B
+
+What is the primary function of the heart?
+A. Digestion
+B. Respiration
+C. Pumping blood
+D. Thinking
+ANSWER: C
