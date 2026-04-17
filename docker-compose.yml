@@ -1,8 +1,8 @@
 services:
   web:
     build: .
-    ports:
-      - "8080:80"
+    expose:
+      - "80"
     volumes:
       - ./moodle:/var/www/html
       - ./moodledata:/var/www/moodledata
@@ -10,6 +10,9 @@ services:
       - MOODLE_DATA=/var/www/moodledata
     depends_on:
       - db
+      - redis
+    networks:
+      - moodle_net
 
   db:
     image: mariadb:10.11
@@ -21,9 +24,32 @@ services:
       - MYSQL_PASSWORD=moodle
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - moodle_net
 
   redis:
     image: redis:7
+    networks:
+      - moodle_net
+
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    restart: always
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    networks:
+      - moodle_net
+
+networks:
+  moodle_net:
+    driver: bridge
 
 volumes:
   db_data:
+  npm_data:
+  npm_letsencrypt:
